@@ -40,3 +40,35 @@ impl<'a, T: SimpleClock> ElapsedTimer<'a, T> {
         self.clock.now_us().saturating_sub(self.now)
     }
 }
+
+/// The deadline has been reached.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct DeadlineReached(());
+
+/// Provides an easy way to specify operation deadline
+///
+/// This timer is usually used to limit polling operation by a certain period of time.
+#[derive(Debug)]
+pub struct Deadline<'a, C: SimpleClock> {
+    clock: &'a C,
+    deadline: u64,
+}
+
+impl<'a, C: SimpleClock> Deadline<'a, C> {
+    /// Creates a new deadline timer instance backed by the specified clock implementation
+    pub fn new(clock: &'a C, timeout: u64) -> Self {
+        Self {
+            clock,
+            deadline: clock.now_us() + timeout,
+        }
+    }
+
+    /// Returns error if the deadline has been reached.
+    pub fn reached(&self) -> Result<(), DeadlineReached> {
+        if self.clock.now_us() > self.deadline {
+            Err(DeadlineReached(()))
+        } else {
+            Ok(())
+        }
+    }
+}
