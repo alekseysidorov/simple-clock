@@ -3,6 +3,13 @@ name = "simple-clock"
 version = "0.1.0"
 edition = "2018"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+authors = ["alekseysidorov"]
+license = "MIT OR Apache-2.0"
+
+description = "The simplest clock for the Rust embedded."
+documentation = "https://docs.rs/simple-clock/"
+repository = "https://github.com/alekseysidorov/simple-clock"
+keywords = ["clock", "no_std"]
+categories = ["no-std"]
 
 [dependencies]
